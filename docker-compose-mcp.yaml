@@ -2,7 +2,7 @@ services:
   capcut-mate-mcp:
     image: registry.cn-shenzhen.aliyuncs.com/jbang/capcut-mate-mcp:latest
     ports:
-      - "30001:30001"
+      - "30001:30000"
     env_file:
       - ./.env
     build:
