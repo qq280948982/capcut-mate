@@ -32,4 +32,4 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     UV_CACHE_DIR="/root/.cache/uv"
 
 # 启动命令
-CMD ["uv", "run", "mcp_server.py", "--workers", "4"]
+CMD ["uv", "run", "python", "mcp_server.py", "--port", "30000"]
