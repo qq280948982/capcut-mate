@@ -1,0 +1,54 @@
+# Git
+.git
+.gitignore
+
+# GitHub workflows
+.github
+
+# Desktop client (Electron app)
+desktop-client
+
+# Tests
+tests
+docs
+
+# Python
+.venv
+venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info
+.eggs
+dist
+build
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# Python dependency management
+uv.lock
+pip-log.txt
+
+# Local development
+docker-compose-local.yaml
+docker-compose-mcp.yaml
+
+# Assets and images (not needed in container)
+assets
+output
+
+# Documentation
+README.md
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db

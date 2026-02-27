@@ -2,3 +2,5 @@
 .venv
 ./dist
 output/**/*
+uv.lock
+.env
