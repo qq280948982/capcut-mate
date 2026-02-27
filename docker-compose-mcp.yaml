@@ -22,6 +22,8 @@ services:
     image: registry.cn-shenzhen.aliyuncs.com/jbang/capcut-mate-mcp:latest
     ports:
       - "30000:30000"
+    env_file:
+      - ./.env
     volumes:
       - ./output:/app/output
       - /etc/localtime:/etc/localtime:ro  # 挂载主机时区
