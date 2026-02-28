@@ -2,7 +2,16 @@
 
 import time
 import shutil
-import uiautomation as uia
+import sys
+
+# 平台检查和依赖导入
+if sys.platform != "win32":
+    raise ImportError("JianyingController is only available on Windows platform")
+
+try:
+    import uiautomation as uia
+except ImportError as e:
+    raise ImportError(f"Missing required Windows dependencies: {e}. Please install with: pip install capcut-mate[windows]")
 
 from enum import Enum
 from typing import Optional, Literal, Callable
@@ -242,6 +251,7 @@ class JianyingController:
             original_path (str): 原始导出路径
             output_path (Optional[str]): 目标输出路径，如果为None则不移动
         """
+        logger.info(f"move {original_path} to {output_path}")
         if output_path is not None:
             shutil.move(original_path, output_path)
 
