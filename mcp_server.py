@@ -3,6 +3,7 @@ import sys
 import os
 import json
 from pydantic import Field
+from typing import List, Optional, Dict, Any
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -13,7 +14,7 @@ from src.schemas.add_audios import AddAudiosRequest
 from src.schemas.add_images import AddImagesRequest
 from src.schemas.add_sticker import AddStickerRequest
 from src.schemas.add_keyframes import AddKeyframesRequest
-from src.schemas.add_captions import AddCaptionsRequest
+from src.schemas.add_captions import AddCaptionsRequest, ShadowInfo
 from src.schemas.add_effects import AddEffectsRequest
 from src.schemas.add_masks import AddMasksRequest
 from src.schemas.add_text_style import AddTextStyleRequest
@@ -154,8 +155,8 @@ def add_images(
 def add_sticker(
     draft_url: str = Field(..., description="草稿URL"),
     sticker_id: str = Field(..., description="贴纸ID，从search_sticker获取"),
-    start: float = Field(default=0, description="开始时间(秒)"),
-    end: float = Field(default=5.0, description="结束时间(秒)"),
+    start: int = Field(default=0, description="开始时间（微秒）"),
+    end: int = Field(default=5000000, description="结束时间（微秒）"),
     scale: float = Field(default=1.0, description="缩放比例"),
     transform_x: int = Field(default=0, description="X轴位置偏移(像素)"),
     transform_y: int = Field(default=0, description="Y轴位置偏移(像素)"),
@@ -226,9 +227,10 @@ def add_captions(
     italic: bool = Field(default=False, description="是否斜体"),
     bold: bool = Field(default=False, description="是否粗体"),
     has_shadow: bool = Field(default=False, description="是否添加阴影"),
-    shadow_info: str = Field(default="", description="阴影信息JSON字符串"),
+    shadow_info: Optional[Dict[str, Any]] = Field(default=None, description="阴影信息对象，包含shadow_alpha、shadow_color、shadow_diffuse、shadow_distance、shadow_angle"),
 ) -> dict:
     """向剪映草稿批量添加字幕"""
+    shadow_obj = ShadowInfo(**shadow_info) if shadow_info else None
     request = AddCaptionsRequest(
         draft_url=draft_url,
         captions=captions,
@@ -249,7 +251,7 @@ def add_captions(
         italic=italic,
         bold=bold,
         has_shadow=has_shadow,
-        shadow_info=shadow_info,
+        shadow_info=shadow_obj,
     )
     result = service.add_captions(
         draft_url=request.draft_url,
@@ -303,16 +305,16 @@ def add_effects(
 @mcp.tool(title="添加遮罩", description="向剪映草稿中的素材添加遮罩效果")
 def add_masks(
     draft_url: str = Field(..., description="草稿URL"),
-    segment_ids: str = Field(..., description="素材片段ID列表JSON字符串"),
-    name: str = Field(default="", description="遮罩名称"),
-    X: float = Field(default=0, description="X坐标(相对位置0-1)"),
-    Y: float = Field(default=0, description="Y坐标(相对位置0-1)"),
-    width: float = Field(default=0, description="遮罩宽度(相对比例0-1)"),
-    height: float = Field(default=0, description="遮罩高度(相对比例0-1)"),
-    feather: float = Field(default=0, description="边缘羽化程度"),
-    rotation: float = Field(default=0, description="旋转角度"),
+    segment_ids: List[str] = Field(..., description="素材片段ID列表"),
+    name: str = Field(default="线性", description="遮罩类型名称"),
+    X: int = Field(default=0, description="遮罩中心X坐标（像素）"),
+    Y: int = Field(default=0, description="遮罩中心Y坐标（像素）"),
+    width: int = Field(default=512, description="遮罩宽度（像素）"),
+    height: int = Field(default=512, description="遮罩高度（像素）"),
+    feather: int = Field(default=0, description="羽化程度（0-100）"),
+    rotation: int = Field(default=0, description="旋转角度（度）"),
     invert: bool = Field(default=False, description="是否反转遮罩"),
-    roundCorner: float = Field(default=0, description="圆角半径"),
+    roundCorner: int = Field(default=0, description="圆角半径（0-100）"),
 ) -> dict:
     """向剪映草稿添加遮罩"""
     request = AddMasksRequest(
@@ -378,13 +380,13 @@ def add_text_style(
 @mcp.tool(title="快速创建素材", description="快速创建包含音视频图片的素材轨道")
 def easy_create_material(
     draft_url: str = Field(..., description="草稿URL"),
-    audio_url: str = Field(default="", description="音频URL"),
-    text: str = Field(default="", description="文本内容"),
-    img_url: str = Field(default="", description="图片URL"),
-    video_url: str = Field(default="", description="视频URL"),
-    text_color: str = Field(default="#FFFFFF", description="文字颜色(hex)"),
-    font_size: int = Field(default=24, description="字体大小"),
-    text_transform_y: int = Field(default=0, description="文字Y轴偏移")
+    audio_url: str = Field(..., description="音频文件URL"),
+    text: Optional[str] = Field(default=None, description="文本内容"),
+    img_url: Optional[str] = Field(default=None, description="图片URL"),
+    video_url: Optional[str] = Field(default=None, description="视频URL"),
+    text_color: str = Field(default="#ffffff", description="文字颜色(hex)"),
+    font_size: int = Field(default=15, description="字体大小"),
+    text_transform_y: int = Field(default=0, description="文字Y轴位置偏移")
 ) -> dict:
     """快速创建素材轨道"""
     request = EasyCreateMaterialRequest(
