@@ -70,8 +70,8 @@ def add_videos(
     alpha: float = Field(default=1.0, description="全局透明度[0, 1]"),
     scale_x: float = Field(default=1.0, description="X轴缩放比例"),
     scale_y: float = Field(default=1.0, description="Y轴缩放比例"),
-    transform_x: int = Field(default=0, description="X轴位置偏移(像素)"),
-    transform_y: int = Field(default=0, description="Y轴位置偏移(像素)"),
+    transform_x: float = Field(default=0, description="X轴位置偏移(像素)"),
+    transform_y: float = Field(default=0, description="Y轴位置偏移(像素)"),
 ) -> dict:
     """向剪映草稿添加视频"""
     request = AddVideosRequest(
@@ -120,8 +120,8 @@ def add_images(
     alpha: float = Field(default=1.0, description="全局透明度[0, 1]"),
     scale_x: float = Field(default=1.0, description="X轴缩放比例"),
     scale_y: float = Field(default=1.0, description="Y轴缩放比例"),
-    transform_x: int = Field(default=0, description="X轴位置偏移(像素)"),
-    transform_y: int = Field(default=0, description="Y轴位置偏移(像素)"),
+    transform_x: float = Field(default=0, description="X轴位置偏移(像素)"),
+    transform_y: float = Field(default=0, description="Y轴位置偏移(像素)"),
 ) -> dict:
     """向剪映草稿批量添加图片"""
     request = AddImagesRequest(
@@ -158,8 +158,8 @@ def add_sticker(
     start: int = Field(default=0, description="开始时间（微秒）"),
     end: int = Field(default=5000000, description="结束时间（微秒）"),
     scale: float = Field(default=1.0, description="缩放比例"),
-    transform_x: int = Field(default=0, description="X轴位置偏移(像素)"),
-    transform_y: int = Field(default=0, description="Y轴位置偏移(像素)"),
+    transform_x: float = Field(default=0, description="X轴位置偏移(像素)"),
+    transform_y: float = Field(default=0, description="Y轴位置偏移(像素)"),
 ) -> dict:
     """向剪映草稿添加贴纸"""
     request = AddStickerRequest(
@@ -210,19 +210,19 @@ def add_keyframes(
 def add_captions(
     draft_url: str = Field(..., description="草稿URL"),
     captions: str = Field(..., description="字幕文本JSON字符串"),
-    text_color: str = Field(default="#FFFFFF", description="文字颜色(hex)"),
-    border_color: str = Field(default="#000000", description="边框颜色(hex)"),
-    alignment: int = Field(default=1, description="对齐方式: 0-左对齐, 1-居中, 2-右对齐"),
-    alpha: float = Field(default=1.0, description="透明度[0, 1]"),
-    font: str = Field(default="思源黑体", description="字体名称"),
-    font_size: int = Field(default=24, description="字体大小"),
-    letter_spacing: float = Field(default=0, description="字间距"),
-    line_spacing: float = Field(default=1.3, description="行间距倍数"),
+    text_color: str = Field(default="#ffffff", description="文字颜色(hex)"),
+    border_color: Optional[str] = Field(default=None, description="边框颜色(hex)"),
+    alignment: int = Field(default=1, ge=0, le=5, description="对齐方式: 0-左对齐, 1-居中, 2-右对齐"),
+    alpha: float = Field(default=1.0, ge=0.0, le=1.0, description="透明度[0, 1]"),
+    font: Optional[str] = Field(default=None, description="字体名称"),
+    font_size: int = Field(default=15, ge=1, description="字体大小"),
+    letter_spacing: Optional[float] = Field(default=None, description="字间距"),
+    line_spacing: Optional[float] = Field(default=None, description="行间距倍数"),
     scale_x: float = Field(default=1.0, description="X轴缩放"),
     scale_y: float = Field(default=1.0, description="Y轴缩放"),
-    transform_x: int = Field(default=0, description="X轴偏移(像素)"),
-    transform_y: int = Field(default=0, description="Y轴偏移(像素)"),
-    style_text: str = Field(default="", description="富文本样式JSON字符串"),
+    transform_x: float = Field(default=0.0, description="X轴偏移(像素)"),
+    transform_y: float = Field(default=0.0, description="Y轴偏移(像素)"),
+    style_text: bool = Field(default=False, description="是否使用样式文本"),
     underline: bool = Field(default=False, description="是否添加下划线"),
     italic: bool = Field(default=False, description="是否斜体"),
     bold: bool = Field(default=False, description="是否粗体"),
@@ -386,7 +386,7 @@ def easy_create_material(
     video_url: Optional[str] = Field(default=None, description="视频URL"),
     text_color: str = Field(default="#ffffff", description="文字颜色(hex)"),
     font_size: int = Field(default=15, description="字体大小"),
-    text_transform_y: int = Field(default=0, description="文字Y轴位置偏移")
+    text_transform_y: float = Field(default=0, description="文字Y轴位置偏移")
 ) -> dict:
     """快速创建素材轨道"""
     request = EasyCreateMaterialRequest(
