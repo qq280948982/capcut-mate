@@ -44,8 +44,8 @@ mcp = FastMCP("CapCut Mate MCP Server")
 
 @mcp.tool(title="创建草稿", description="创建一个新的剪映草稿，后续操作都基于此草稿进行")
 def create_draft(
-    width: int = Field(default=1920, ge=1, description="【可选】视频宽度分辨率，单位像素，如1920、1080，默认1920"),
-    height: int = Field(default=1080, ge=1, description="【可选】视频高度分辨率，单位像素，如1080、1920，默认1080")
+    width: Optional[int] = Field(default=1920, ge=1, description="【可选】视频宽度分辨率，单位像素，如1920、1080，默认1920"),
+    height: Optional[int] = Field(default=1080, ge=1, description="【可选】视频高度分辨率，单位像素，如1080、1920，默认1080")
 ) -> dict:
     """创建剪映草稿"""
     result = service.create_draft(width=width, height=height)
@@ -77,11 +77,11 @@ def add_videos(
 - transition: string, (可选)转场效果名称
 - transition_duration: number, (可选)转场时长，单位微秒
 - volume: number, (可选)音量大小，范围0-10，默认1"""),
-    alpha: float = Field(default=1.0, ge=0.0, le=1.0, description="【可选】全局透明度，值范围0.0-1.0，默认1.0"),
-    scale_x: float = Field(default=1.0, description="【可选】X轴缩放比例，1.0为原始大小，默认1.0"),
-    scale_y: float = Field(default=1.0, description="【可选】Y轴缩放比例，1.0为原始大小，默认1.0"),
-    transform_x: float = Field(default=0.0, description="【可选】X轴位置偏移，单位像素，正值向右，默认0"),
-    transform_y: float = Field(default=0.0, description="【可选】Y轴位置偏移，单位像素，正值向下，默认0"),
+    alpha: Optional[float] = Field(default=1.0, ge=0.0, le=1.0, description="【可选】全局透明度，值范围0.0-1.0，默认1.0"),
+    scale_x: Optional[float] = Field(default=1.0, description="【可选】X轴缩放比例，1.0为原始大小，默认1.0"),
+    scale_y: Optional[float] = Field(default=1.0, description="【可选】Y轴缩放比例，1.0为原始大小，默认1.0"),
+    transform_x: Optional[float] = Field(default=0.0, description="【可选】X轴位置偏移，单位像素，正值向右，默认0"),
+    transform_y: Optional[float] = Field(default=0.0, description="【可选】Y轴位置偏移，单位像素，正值向下，默认0"),
     scene_timelines: Optional[str] = Field(default="[]", description="""【可选】分镜时间线JSON数组，用于自动变速，格式：[{"start":0,"end":6000000,"curve_speed":"linear"}]
 - start: number, 分镜开始时间
 - end: number, 分镜结束时间
@@ -145,11 +145,11 @@ def add_images(
 - animation: string, (可选)动画效果，如"淡入淡出"
 - transition: string, (可选)转场效果，如"溶解"
 - transition_duration: number, (可选)转场时长，单位毫秒"""),
-    alpha: float = Field(default=1.0, ge=0.0, le=1.0, description="【可选】全局透明度，值范围0.0-1.0，默认1.0"),
-    scale_x: float = Field(default=1.0, description="【可选】X轴缩放比例，1.0为原始大小，默认1.0"),
-    scale_y: float = Field(default=1.0, description="【可选】Y轴缩放比例，1.0为原始大小，默认1.0"),
-    transform_x: float = Field(default=0.0, description="【可选】X轴位置偏移，单位像素，正值向右，默认0"),
-    transform_y: float = Field(default=0.0, description="【可选】Y轴位置偏移，单位像素，正值向下，默认0"),
+    alpha: Optional[float] = Field(default=1.0, ge=0.0, le=1.0, description="【可选】全局透明度，值范围0.0-1.0，默认1.0"),
+    scale_x: Optional[float] = Field(default=1.0, description="【可选】X轴缩放比例，1.0为原始大小，默认1.0"),
+    scale_y: Optional[float] = Field(default=1.0, description="【可选】Y轴缩放比例，1.0为原始大小，默认1.0"),
+    transform_x: Optional[float] = Field(default=0.0, description="【可选】X轴位置偏移，单位像素，正值向右，默认0"),
+    transform_y: Optional[float] = Field(default=0.0, description="【可选】Y轴位置偏移，单位像素，正值向下，默认0"),
 ) -> dict:
     """向剪映草稿批量添加图片"""
     request = AddImagesRequest(
@@ -185,9 +185,9 @@ def add_sticker(
     sticker_id: str = Field(..., description="【必填】贴纸唯一标识ID，可通过search_sticker搜索获取"),
     start: int = Field(..., description="【必填】贴纸在时间轴上的开始时间，单位微秒"),
     end: int = Field(..., description="【必填】贴纸在时间轴上的结束时间，单位微秒"),
-    scale: float = Field(default=1.0, description="【可选】贴纸缩放比例，1.0为原始大小，默认1.0"),
-    transform_x: float = Field(default=0.0, description="【可选】X轴位置偏移，单位像素，正值向右，默认0"),
-    transform_y: float = Field(default=0.0, description="【可选】Y轴位置偏移，单位像素，正值向下，默认0"),
+    scale: Optional[float] = Field(default=1.0, description="【可选】贴纸缩放比例，1.0为原始大小，默认1.0"),
+    transform_x: Optional[float] = Field(default=0.0, description="【可选】X轴位置偏移，单位像素，正值向右，默认0"),
+    transform_y: Optional[float] = Field(default=0.0, description="【可选】Y轴位置偏移，单位像素，正值向下，默认0"),
 ) -> dict:
     """向剪映草稿添加贴纸"""
     request = AddStickerRequest(
@@ -256,21 +256,21 @@ def add_captions(
 - keyword_font_size: number, (可选)关键词字体大小"""),
     text_color: str = Field(default="#ffffff", description="【可选】文字颜色，十六进制格式如#ffffff，默认#ffffff"),
     border_color: Optional[str] = Field(default=None, description="【可选】边框颜色，十六进制格式如#000000，默认无边框"),
-    alignment: int = Field(default=1, ge=0, le=5, description="【可选】对齐方式: 0-左对齐, 1-居中, 2-右对齐, 3-左下, 4-居中, 5-右下，默认1居中"),
+    alignment: Optional[int] = Field(default=1, ge=0, le=5, description="【可选】对齐方式: 0-左对齐, 1-居中, 2-右对齐, 3-左下, 4-居中, 5-右下，默认1居中"),
     alpha: float = Field(default=1.0, ge=0.0, le=1.0, description="【可选】透明度，值范围0.0-1.0，默认1.0完全不透明"),
     font: Optional[str] = Field(default=None, description="【可选】字体名称，如'思源黑体'、'抖音体'等，默认使用草稿设置"),
     font_size: int = Field(default=15, ge=1, description="【可选】字体大小，数值越大字越大，默认15"),
     letter_spacing: Optional[float] = Field(default=None, description="【可选】字间距，数值越大字间距越大，默认0"),
     line_spacing: Optional[float] = Field(default=None, description="【可选】行间距倍数，1.0为原始行距，默认1.0"),
-    scale_x: float = Field(default=1.0, description="【可选】X轴缩放比例，1.0为原始大小，默认1.0"),
-    scale_y: float = Field(default=1.0, description="【可选】Y轴缩放比例，1.0为原始大小，默认1.0"),
-    transform_x: float = Field(default=0.0, description="【可选】X轴偏移量，单位像素，正值向右，默认0"),
-    transform_y: float = Field(default=0.0, description="【可选】Y轴偏移量，单位像素，正值向下，默认0"),
-    style_text: int = Field(default=0, ge=0, le=1, description="【可选】是否使用样式文本，0-不使用，1-使用，默认0"),
-    underline: bool = Field(default=False, description="【可选】是否添加下划线，默认False"),
-    italic: bool = Field(default=False, description="【可选】是否斜体，默认False"),
-    bold: bool = Field(default=False, description="【可选】是否粗体，默认False"),
-    has_shadow: bool = Field(default=False, description="【可选】是否添加阴影，默认False"),
+    scale_x: Optional[float] = Field(default=1.0, description="【可选】X轴缩放比例，1.0为原始大小，默认1.0"),
+    scale_y: Optional[float] = Field(default=1.0, description="【可选】Y轴缩放比例，1.0为原始大小，默认1.0"),
+    transform_x: Optional[float] = Field(default=0.0, description="【可选】X轴偏移量，单位像素，正值向右，默认0"),
+    transform_y: Optional[float] = Field(default=0.0, description="【可选】Y轴偏移量，单位像素，正值向下，默认0"),
+    style_text: Optional[int] = Field(default=0, ge=0, le=1, description="【可选】是否使用样式文本，0-不使用，1-使用，默认0"),
+    underline: Optional[bool] = Field(default=False, description="【可选】是否添加下划线，默认False"),
+    italic: Optional[bool] = Field(default=False, description="【可选】是否斜体，默认False"),
+    bold: Optional[bool] = Field(default=False, description="【可选】是否粗体，默认False"),
+    has_shadow: Optional[bool] = Field(default=False, description="【可选】是否添加阴影，默认False"),
     shadow_info: Optional[Dict[str, Any]] = Field(default=None, description="""【可选】阴影参数对象，当has_shadow为true时生效，结构：
 - shadow_alpha: number, 阴影不透明度，范围0-1，默认0.9
 - shadow_color: string, 阴影颜色，十六进制如"#000000"，默认#000000
@@ -358,15 +358,15 @@ def add_effects(
 def add_masks(
     draft_url: str = Field(..., description="【必填】草稿URL，由create_draft返回"),
     segment_ids: str = Field(..., description="【必填】素材片段ID列表JSON字符串数组，格式：[\"segment_id1\",\"segment_id2\"]，从add_videos或add_images的返回值获取"),
-    name: str = Field(default="线性", description="【可选】遮罩类型名称，可选值：线性、镜面、圆形、矩形、爱心、星形，默认'线性'"),
-    X: int = Field(default=0, description="【可选】遮罩中心X坐标，单位像素，默认0"),
-    Y: int = Field(default=0, description="【可选】遮罩中心Y坐标，单位像素，默认0"),
-    width: int = Field(default=512, description="【可选】遮罩宽度，单位像素，默认512"),
-    height: int = Field(default=512, description="【可选】遮罩高度，单位像素，默认512"),
-    feather: int = Field(default=0, ge=0, le=100, description="【可选】羽化程度，范围0-100，默认0"),
-    rotation: int = Field(default=0, ge=0, le=360, description="【可选】旋转角度，范围0-360度，默认0"),
-    invert: bool = Field(default=False, description="【可选】是否反转遮罩，true为反转，默认False"),
-    roundCorner: int = Field(default=0, ge=0, le=100, description="【可选】矩形圆角半径，范围0-100，默认0"),
+    name: Optional[str] = Field(default="线性", description="【可选】遮罩类型名称，可选值：线性、镜面、圆形、矩形、爱心、星形，默认'线性'"),
+    X: Optional[int] = Field(default=0, description="【可选】遮罩中心X坐标，单位像素，默认0"),
+    Y: Optional[int] = Field(default=0, description="【可选】遮罩中心Y坐标，单位像素，默认0"),
+    width: Optional[int] = Field(default=512, description="【可选】遮罩宽度，单位像素，默认512"),
+    height: Optional[int] = Field(default=512, description="【可选】遮罩高度，单位像素，默认512"),
+    feather: Optional[int] = Field(default=0, ge=0, le=100, description="【可选】羽化程度，范围0-100，默认0"),
+    rotation: Optional[int] = Field(default=0, ge=0, le=360, description="【可选】旋转角度，范围0-360度，默认0"),
+    invert: Optional[bool] = Field(default=False, description="【可选】是否反转遮罩，true为反转，默认False"),
+    roundCorner: Optional[int] = Field(default=0, ge=0, le=100, description="【可选】矩形圆角半径，范围0-100，默认0"),
 ) -> dict:
     """向剪映草稿添加遮罩"""
     request = AddMasksRequest(
@@ -407,9 +407,9 @@ def add_masks(
 def add_text_style(
     text: str = Field(..., description="【必填】完整文本内容，用于匹配和替换"),
     keyword: str = Field(..., description="【必填】需要高亮的关键词，多个用|分隔，如\"快乐|顶级思维\""),
-    font_size: int = Field(default=24, ge=1, description="【可选】普通文本的字体大小，默认24"),
-    keyword_color: str = Field(default="#ff7100", description="【可选】关键词文本颜色，十六进制格式如#ff7100，默认#ff7100"),
-    keyword_font_size: int = Field(default=24, ge=1, description="【可选】关键词字体大小，默认24")
+    font_size: Optional[int] = Field(default=24, ge=1, description="【可选】普通文本的字体大小，默认24"),
+    keyword_color: Optional[str] = Field(default="#ff7100", description="【可选】关键词文本颜色，十六进制格式如#ff7100，默认#ff7100"),
+    keyword_font_size: Optional[int] = Field(default=24, ge=1, description="【可选】关键词字体大小，默认24")
 ) -> dict:
     """为文本创建富文本样式"""
     request = AddTextStyleRequest(
@@ -436,9 +436,9 @@ def easy_create_material(
     text: Optional[str] = Field(default=None, description="【可选】要添加的文字内容"),
     img_url: Optional[str] = Field(default=None, description="【可选】图片文件URL地址"),
     video_url: Optional[str] = Field(default=None, description="【可选】视频文件URL地址"),
-    text_color: str = Field(default="#ffffff", description="【可选】文字颜色，十六进制格式如#ffffff，默认#ffffff"),
-    font_size: int = Field(default=15, ge=1, description="【可选】字体大小，默认15"),
-    text_transform_y: float = Field(default=0.0, description="【可选】文字Y轴位置偏移，单位像素，正值向下，默认0")
+    text_color: Optional[str] = Field(default="#ffffff", description="【可选】文字颜色，十六进制格式如#ffffff，默认#ffffff"),
+    font_size: Optional[int] = Field(default=15, ge=1, description="【可选】字体大小，默认15"),
+    text_transform_y: Optional[float] = Field(default=0.0, description="【可选】文字Y轴位置偏移，单位像素，正值向下，默认0")
 ) -> dict:
     """快速创建素材轨道"""
     request = EasyCreateMaterialRequest(
@@ -466,8 +466,8 @@ def easy_create_material(
 
 @mcp.tool(title="获取文字动画", description="获取文字出入场动画列表，用于添加到字幕轨道")
 def get_text_animations(
-    mode: int = Field(default=0, ge=0, le=2, description="【可选】筛选模式：0-全部, 1-VIP, 2-免费，默认0"),
-    type: str = Field(default="in", description="【可选】动画类型：in-入场动画, out-出场动画, loop-循环动画，默认\"in\"")
+    mode: Optional[int] = Field(default=0, ge=0, le=2, description="【可选】筛选模式：0-全部, 1-VIP, 2-免费，默认0"),
+    type: Optional[str] = Field(default="in", description="【可选】动画类型：in-入场动画, out-出场动画, loop-循环动画，默认\"in\"")
 ) -> dict:
     """获取文字出入场动画"""
     request = GetTextAnimationsRequest(mode=mode, type=type)
@@ -477,8 +477,8 @@ def get_text_animations(
 
 @mcp.tool(title="获取图片动画", description="获取图片出入场动画列表，用于添加到图片轨道")
 def get_image_animations(
-    mode: int = Field(default=0, ge=0, le=2, description="【可选】筛选模式：0-全部, 1-VIP, 2-免费，默认0"),
-    type: str = Field(default="in", description="【可选】动画类型：in-入场动画, out-出场动画, loop-组合，默认\"in\"")
+    mode: Optional[int] = Field(default=0, ge=0, le=2, description="【可选】筛选模式：0-全部, 1-VIP, 2-免费，默认0"),
+    type: Optional[str] = Field(default="in", description="【可选】动画类型：in-入场动画, out-出场动画, loop-组合，默认\"in\"")
 ) -> dict:
     """获取图片出入场动画"""
     request = GetImageAnimationsRequest(mode=mode, type=type)
@@ -531,8 +531,8 @@ def get_audio_duration(
 def timelines(
     duration: int = Field(..., ge=0, description="【必填】总时长，单位微秒，如10000000代表10秒"),
     num: int = Field(..., ge=1, description="【必填】分割数量，即时间线上的个数"),
-    start: int = Field(default=0, ge=0, description="【可选】开始偏移量，单位微秒，默认0"),
-    type: int = Field(default=0, ge=0, le=1, description="【可选】分割方式：0-平均分割，1-随机分割，默认0")
+    start: Optional[int] = Field(default=0, ge=0, description="【可选】开始偏移量，单位微秒，默认0"),
+    type: Optional[int] = Field(default=0, ge=0, le=1, description="【可选】分割方式：0-平均分割，1-随机分割，默认0")
 ) -> dict:
     """计算时间线"""
     request = TimelinesRequest(duration=duration, num=num, start=start, type=type)
@@ -563,8 +563,8 @@ def audio_infos(
     timelines_str: str = Field(..., description="""【必填】时间线JSON字符串数组，格式：[{"start":0,"end":284891428},{"start":284891428,"end":579578774}]
 - start: number, 开始时间，单位微秒
 - end: number, 结束时间，单位微秒"""),
-    audio_effect: str = Field(default="", description="【可选】音频特效名称，如\"教堂\"、\"混响\"等，默认无"),
-    volume: float = Field(default=1.0, ge=0.0, le=10.0, description="【可选】音量大小，范围0.0-10.0，默认1.0")
+    audio_effect: Optional[str] = Field(default="", description="【可选】音频特效名称，如\"教堂\"、\"混响\"等，默认无"),
+    volume: Optional[float] = Field(default=1.0, ge=0.0, le=10.0, description="【可选】音量大小，范围0.0-10.0，默认1.0")
 ) -> dict:
     """根据音频URL和时间线生成音频信息"""
     timelines_list = json.loads(timelines_str) if isinstance(timelines_str, str) else timelines_str
@@ -584,16 +584,16 @@ def imgs_infos(
     timelines_str: str = Field(..., description="""【必填】时间线JSON字符串数组，格式：[{"start":0,"end":5000},{"start":5000,"end":10000}]
 - start: number, 开始时间，单位毫秒
 - end: number, 结束时间，单位毫秒"""),
-    height: int = Field(default=1024, ge=1, description="【可选】图片高度，单位像素，默认1024"),
-    width: int = Field(default=1024, ge=1, description="【可选】图片宽度，单位像素，默认1024"),
-    in_animation: str = Field(default="", description="【可选】入场动画名称，如\"渐显出现\"、\"缩放入场\"，多个用英文|分割"),
-    in_animation_duration: int = Field(default=500, ge=0, description="【可选】入场动画时长，单位毫秒，默认500"),
-    loop_animation: str = Field(default="", description="【可选】循环动画名称，多个用英文|分割"),
-    loop_animation_duration: int = Field(default=500, ge=0, description="【可选】循环动画时长，单位毫秒，默认500"),
-    out_animation: str = Field(default="", description="【可选】出场动画名称，多个用英文|分割"),
-    out_animation_duration: int = Field(default=500, ge=0, description="【可选】出场动画时长，单位毫秒，默认500"),
-    transition: str = Field(default="", description="【可选】转场效果名称，如\"溶解\"、\"推近\""),
-    transition_duration: int = Field(default=500, ge=500, le=2500, description="【可选】转场时长，单位毫秒，范围500-2500，默认500")
+    height: Optional[int] = Field(default=1024, ge=1, description="【可选】图片高度，单位像素，默认1024"),
+    width: Optional[int] = Field(default=1024, ge=1, description="【可选】图片宽度，单位像素，默认1024"),
+    in_animation: Optional[str] = Field(default="", description="【可选】入场动画名称，如\"渐显出现\"、\"缩放入场\"，多个用英文|分割"),
+    in_animation_duration: Optional[int] = Field(default=500, ge=0, description="【可选】入场动画时长，单位毫秒，默认500"),
+    loop_animation: Optional[str] = Field(default="", description="【可选】循环动画名称，多个用英文|分割"),
+    loop_animation_duration: Optional[int] = Field(default=500, ge=0, description="【可选】循环动画时长，单位毫秒，默认500"),
+    out_animation: Optional[str] = Field(default="", description="【可选】出场动画名称，多个用英文|分割"),
+    out_animation_duration: Optional[int] = Field(default=500, ge=0, description="【可选】出场动画时长，单位毫秒，默认500"),
+    transition: Optional[str] = Field(default="", description="【可选】转场效果名称，如\"溶解\"、\"推近\""),
+    transition_duration: Optional[int] = Field(default=500, ge=500, le=2500, description="【可选】转场时长，单位毫秒，范围500-2500，默认500")
 ) -> dict:
     """根据图片URL和时间线生成图片信息"""
     timelines_list = json.loads(timelines_str) if isinstance(timelines_str, str) else timelines_str
@@ -621,18 +621,18 @@ def caption_infos(
     timelines_str: str = Field(..., description="""【必填】时间线JSON字符串数组，格式：[{"start":0,"end":284891428},{"start":284891428,"end":579578774}]
 - start: number, 开始时间，单位微秒
 - end: number, 结束时间，单位微秒"""),
-    font_size: int = Field(default=24, ge=1, description="【可选】字幕字体大小，默认24"),
-    keyword_color: str = Field(default="#ff7100", description="【可选】关键词颜色，十六进制格式如#ff7100，默认#ff7100"),
-    keyword_font_size: int = Field(default=24, ge=1, description="【可选】关键词字体大小，默认24"),
-    keywords: str = Field(default="", description="【可选】关键词列表，多个用|分隔，如\"床前|明天\""),
-    in_animation: str = Field(default="", description="【可选】入场动画名称，如\"冰雪飘动\"、\"渐显入场\""),
-    in_animation_duration: int = Field(default=500, ge=0, description="【可选】入场动画时长，单位毫秒，默认500"),
-    loop_animation: str = Field(default="", description="【可选】循环动画名称，多个用英文|分割"),
-    loop_animation_duration: int = Field(default=500, ge=0, description="【可选】循环动画时长，单位毫秒，默认500"),
-    out_animation: str = Field(default="", description="【可选】出场动画名称，多个用英文|分割"),
-    out_animation_duration: int = Field(default=500, ge=0, description="【可选】出场动画时长，单位毫秒，默认500"),
-    transition: str = Field(default="", description="【可选】转场效果名称"),
-    transition_duration: int = Field(default=500, ge=0, description="【可选】转场时长，单位毫秒，默认500")
+    font_size: Optional[int] = Field(default=24, ge=1, description="【可选】字幕字体大小，默认24"),
+    keyword_color: Optional[str] = Field(default="#ff7100", description="【可选】关键词颜色，十六进制格式如#ff7100，默认#ff7100"),
+    keyword_font_size: Optional[int] = Field(default=24, ge=1, description="【可选】关键词字体大小，默认24"),
+    keywords: Optional[str] = Field(default="", description="【可选】关键词列表，多个用|分隔，如\"床前|明天\""),
+    in_animation: Optional[str] = Field(default="", description="【可选】入场动画名称，如\"冰雪飘动\"、\"渐显入场\""),
+    in_animation_duration: Optional[int] = Field(default=500, ge=0, description="【可选】入场动画时长，单位毫秒，默认500"),
+    loop_animation: Optional[str] = Field(default="", description="【可选】循环动画名称，多个用英文|分割"),
+    loop_animation_duration: Optional[int] = Field(default=500, ge=0, description="【可选】循环动画时长，单位毫秒，默认500"),
+    out_animation: Optional[str] = Field(default="", description="【可选】出场动画名称，多个用英文|分割"),
+    out_animation_duration: Optional[int] = Field(default=500, ge=0, description="【可选】出场动画时长，单位毫秒，默认500"),
+    transition: Optional[str] = Field(default="", description="【可选】转场效果名称"),
+    transition_duration: Optional[int] = Field(default=500, ge=0, description="【可选】转场时长，单位毫秒，默认500")
 ) -> dict:
     """根据文本和时间线生成字幕信息"""
     timelines_list = json.loads(timelines_str) if isinstance(timelines_str, str) else timelines_str
@@ -711,12 +711,12 @@ def video_infos(
     timelines_str: str = Field(..., description="""【必填】时间线JSON字符串数组，格式：[{"start":0,"end":284891428},{"start":284891428,"end":579578774}]
 - start: number, 开始时间，单位微秒
 - end: number, 结束时间，单位微秒"""),
-    width: int = Field(default=1920, ge=1, description="【可选】视频宽度，单位像素，默认1920"),
-    height: int = Field(default=1080, ge=1, description="【可选】视频高度，单位像素，默认1080"),
-    mask: str = Field(default="", description="【可选】视频蒙版，可选值：圆形、矩形、爱心、星形"),
-    transition: str = Field(default="", description="【可选】转场效果名称，如\"溶解\"、\"推近\""),
-    transition_duration: int = Field(default=1000, ge=0, description="【可选】转场时长，单位毫秒，默认1000"),
-    volume: float = Field(default=1.0, ge=0.0, le=10.0, description="【可选】音量大小，范围0-10，默认1.0")
+    width: Optional[int] = Field(default=1920, ge=1, description="【可选】视频宽度，单位像素，默认1920"),
+    height: Optional[int] = Field(default=1080, ge=1, description="【可选】视频高度，单位像素，默认1080"),
+    mask: Optional[str] = Field(default="", description="【可选】视频蒙版，可选值：圆形、矩形、爱心、星形"),
+    transition: Optional[str] = Field(default="", description="【可选】转场效果名称，如\"溶解\"、\"推近\""),
+    transition_duration: Optional[int] = Field(default=1000, ge=0, description="【可选】转场时长，单位毫秒，默认1000"),
+    volume: Optional[float] = Field(default=1.0, ge=0.0, le=10.0, description="【可选】音量大小，范围0-10，默认1.0")
 ) -> dict:
     """根据视频URL和时间线生成视频信息"""
     timelines_list = json.loads(timelines_str) if isinstance(timelines_str, str) else timelines_str
