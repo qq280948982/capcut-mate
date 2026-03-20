@@ -82,12 +82,13 @@ def add_videos(
     scale_y: float = Field(default=1.0, description="【必填】Y轴缩放比例，1.0为原始大小，建议默认值1.0"),
     transform_x: float = Field(default=0.0, description="【必填】X轴位置偏移，单位像素，正值向右，建议默认值0"),
     transform_y: float = Field(default=0.0, description="【必填】Y轴位置偏移，单位像素，正值向下，建议默认值0"),
-    scene_timelines: str = Field(default="[]", description="""【可选】分镜时间线JSON数组，用于自动变速，格式：[{"start":0,"end":6000000,"curve_speed":"linear"}]
+    scene_timelines: Optional[str] = Field(default=None, description="""【可选】分镜时间线JSON数组，用于自动变速，格式：[{"start":0,"end":6000000,"curve_speed":"linear"}]
 - start: number, 分镜开始时间
 - end: number, 分镜结束时间
 - curve_speed: string, 曲线变速参数"""),
 ) -> dict:
     """向剪映草稿添加视频"""
+    scene_timelines_list = json.loads(scene_timelines) if scene_timelines else None
     request = AddVideosRequest(
         draft_url=draft_url,
         video_infos=video_infos,
@@ -96,6 +97,7 @@ def add_videos(
         scale_y=scale_y,
         transform_x=transform_x,
         transform_y=transform_y,
+        scene_timelines=scene_timelines_list,
     )
     result = service.add_videos(
         draft_url=request.draft_url,
@@ -105,6 +107,7 @@ def add_videos(
         scale_y=request.scale_y,
         transform_x=request.transform_x,
         transform_y=request.transform_y,
+        scene_timelines=request.scene_timelines,
     )
     return {
         "draft_url": result[0],
